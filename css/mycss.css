@@ -1,0 +1,31 @@
+html,body{height:100%; width:100%; overflow:hidden; margin:0;
+padding:0;}
+
+
+#menu{
+    width:200px;
+    height:100%;
+    background-color: dimgrey;
+    float:left;
+
+}
+#screen{
+    height:100%;
+    width:auto;
+    float:right;
+
+}
+
+#head{
+    height:7%;
+    width:100%;
+    background-color: darkslateblue;
+
+}
+
+#mapArea{
+    height:90%;
+    width:100%;
+    background-color: aliceblue;
+
+}
