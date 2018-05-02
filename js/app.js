@@ -32,6 +32,9 @@ var map;
 var infoWindow = new AMap.InfoWindow({
     offset: new AMap.Pixel(15, -20)
 });
+var lastClickMarker=null;
+
+
 
 function initializeMap() {
     // 创建地图对象
@@ -83,7 +86,8 @@ function searchLocation(name) {
                 marker.id = pois[i].id;
                 marker.name = pois[i].name;
                 marker.on('click', markerClick);
-                marker.emit('click', {target: marker});
+                //marker.emit('click', {target: marker});
+                marker.setExtData(pois[i].name);
                 map.setFitView();
             }
  
@@ -92,6 +96,44 @@ function searchLocation(name) {
 }
 
 function markerClick(e) {
+    //恢复上一marker的状态
+    if (lastClickMarker != null) {
+        lastClickMarker.setAnimation('AMAP_ANIMATION_NONE');
+    }
+    lastClickMarker = e.target;
+    e.target.setAnimation('AMAP_ANIMATION_BOUNCE');
+    var q=e.target.getExtData();
+    //加入翻译
+    //Baidu trans api
+    var appid = '20180503000152683';
+    var key = 'ZAK33SUJ_pCT27O_O4j0';
+    var from='zh';
+    var to='en';
+    var salt = (new Date).getTime();
+    var str1 = appid + q + salt + key;
+    var sign = MD5(str1);
+    $.ajax({
+        url: 'http://api.fanyi.baidu.com/api/trans/vip/translate',
+        type: 'get',
+        dataType: 'jsonp',
+        data: {
+            q: q,
+            appid: appid,
+            salt: salt,
+            from: from,
+            to: to,
+            sign: sign
+        }
+    }).done(function(data){
+        if(data.trans_result.length>0){
+            alert(data.trans_result[0].dst);
+        }
+        else{
+            alert("Translation failed.\r\n error_code:"+data.erro_code+"error_msg:"+data.error_msg+".");
+        }
+    
+    });
+
     infoWindow.setContent(e.target.content);
     infoWindow.open(map, e.target.getPosition());
 }
