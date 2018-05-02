@@ -1,31 +1,91 @@
-html,body{height:100%; width:100%; overflow:hidden; margin:0;
-padding:0;}
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    font-family: sans-serif;
+    position: relative;
+    padding: 0;
+}
 
 
-#menu{
-    width:200px;
-    height:100%;
+#menu {
+    width: 260px;
+    height: 100%;
     background-color: dimgrey;
-    float:left;
-
-}
-#screen{
-    height:100%;
-    width:auto;
-    float:right;
+    float: left;
+    display: inline-block;
+    overflow: auto;
 
 }
 
-#head{
-    height:7%;
-    width:100%;
-    background-color: darkslateblue;
+#screen {
+    height: 100%;
+    width: auto;
+    text-align: left;
+    padding: auto 2em;
+    display: inline-block;
+    top: 0px;
 
 }
 
-#mapArea{
-    height:90%;
-    width:100%;
+#head {
+    height: 7%;
+    width: 100%;
+    background-color: #aaa;
+}
+
+#mapArea {
+    height: 90%;
+    width: 100%;
     background-color: aliceblue;
 
+}
+
+#head i {
+    color: #FFF;
+    font-size: 200%;
+}
+
+#menu h3 {
+    color: beige;
+}
+
+#filterArea input {
+    width: 150px;
+    height:20px;
+    float:left;
+    display: inline-block;
+
+
+}
+
+#filterArea {
+    height: 26px;
+    width:100%;
+}
+
+#search{
+    height: 26px;
+    width:100px;
+    background-color: black;
+    color: white;
+    font-size:90%;
+}
+
+#mapDiv {
+    height: 400px;
+    width: 100%;
+    padding-bottom: 5%;
+}
+
+.marker {
+    width: 22px;
+    height: 36px;
+    background-image: url(http://webapi.amap.com/theme/v1.3/markers/b/mark_b.png);
+    background-size: 22px 36px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
 }
