@@ -4,7 +4,7 @@ body {
     width: 100%;
     overflow: hidden;
     margin: 0;
-    font-family: sans-serif;
+    font-family: "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Helvetica, Arial, Verdana, sans-serif;
     position: relative;
     padding: 0;
 }
@@ -16,13 +16,12 @@ body {
     background-color: dimgrey;
     float: left;
     display: inline-block;
-    overflow: auto;
 
 }
 
 #screen {
     height: 100%;
-    width: auto;
+    width: 1000px;
     text-align: left;
     padding: auto 2em;
     display: inline-block;
@@ -49,7 +48,8 @@ body {
 }
 
 #menu h3 {
-    color: beige;
+    color:floralwhite;
+    height:8%;
 }
 
 #filterArea input {
@@ -62,7 +62,7 @@ body {
 }
 
 #filterArea {
-    height: 26px;
+    height: 8%;
     width:100%;
 }
 
@@ -88,4 +88,37 @@ body {
     text-align: center;
     line-height: 40px;
     color: #fff;
+}
+
+#overflow{
+    display: block;
+    margin:0;
+    padding:0;
+    bottom:0px;
+
+    
+}
+
+#locList{
+    padding:0;
+    width:260px;
+    height:80%;
+    bottom: 0px;
+    overflow: auto;
+}
+
+#locList li{
+    color:floralwhite;
+    font-weight: lighter;
+    cursor: pointer;
+    padding:4px;
+    list-style-type:none;
+    height:30px;
+
+}
+
+.mouseover{
+    background-color: rgba(105, 105, 105,0.4);
+    -moz-box-shadow:5px 0px 13px #333333; -webkit-box-shadow:5px 0px 13px #333333; box-shadow:5px 0px 13px #333333;
+
 }
