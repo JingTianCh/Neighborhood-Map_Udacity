@@ -33,35 +33,34 @@ function myViewModel() {
     //绑定搜索栏输入信息
     self.inputFilter = ko.observable();
     //初始化左侧列表栏内容
-    self.title = ko.observableArray(titleArray);
+    //self.title = ko.observableArray(titleArray);
+    self.title = ko.computed(function() {
+        if (!self.inputFilter()) {
+            markerArray.forEach(function(el){
+                el.show();
+            });
+            return titleArray;
+        } else {
+            return titleArray.filter(function(item,index) {
+                if(item.indexOf(self.inputFilter()) != -1){
+                markerArray[index].show();
+                return true;
+                }
+                markerArray[index].hide();
+                return false;
+            });
+        }
+    });
     //响应搜索/筛选按钮的内容
     self.filterEvt = function (evt) {
-        var newArray = [];
-            ko.utils.arrayForEach(titleArray, function (el, index) {
-                if (el.indexOf(self.inputFilter()) >=0) {
-                    newArray.push(el);
-                    markerArray[index].show();
-                } else {
-                    markerArray[index].hide();
-                }
-            });
-        if (typeof (self.inputFilter()) == 'undefined' || self.inputFilter() == ''||newArray.length==0) {
-            if(newArray.length==0){
-               alert('筛选无结果，请重新输入');
-               }
-            newArray.splice(0,newArray.length);
-            for (var i = 0; i < markerArray.length; i++) {
-                markerArray[i].show();
-                newArray.push(titleArray[i]);
-            }
-            self.inputFilter('');
-        }
-
-        self.title(newArray);
         //自动显示第一个符合条件地点的信息栏
-        if(newArray.length>0){
-            marker=markerArray[ko.utils.arrayIndexOf(titleArray, newArray[0])];
+        if(self.title().length>0){
+            marker=markerArray[ko.utils.arrayIndexOf(titleArray, self.title()[0])];
             marker.emit('click', {target: marker});
+        }
+        else{
+            alert('筛选无结果，请重新输入');
+            self.inputFilter('');
         }
         
     };
@@ -121,7 +120,7 @@ function searchLocation(name) {
             placeSearch.search(name, function (status, data) {
                 if (status !== 'complete') return;
                 var poisCount = data.poiList.count > 30 ? 30 : data.poiList.count;
-                for (var i = 0; i < poisCount; i++) {
+                for (let i = 0; i < poisCount; i++) {
 
                     var pois = data.poiList.pois;
                     var marker = new AMap.Marker({
@@ -133,9 +132,12 @@ function searchLocation(name) {
                         offset: new AMap.Pixel(20, 20), //修改label相对于maker的位置
                         content: pois[i].name
                     });
-                    marker.setTitle(pois[i].name + '\r\n地址：' + pois[i].address + '\r\n类型：' + pois[i].type);
+                    //marker.setTitle(pois[i].name + '\r\n地址：' + pois[i].address + '\r\n类型：' + pois[i].type);
+                    marker.setTitle(`${pois[i].name}
+                                    地址：${pois[i].address}
+                                    类型：${pois[i].type}`);
 
-                    marker.content = '<span class="infoWindow"><b>' + pois[i].name + "</b><a class='inline'  href='http://ditu.amap.com/detail/" + pois[i].id + "' target='_blank'>详细信息</a>" + '<br/>地址：' + pois[i].address + '<br/>类型：' + pois[i].type + '</span>';
+                    marker.content = `<span class="infoWindow"><b>${pois[i].name}</b><a class='inline'  href='http://ditu.amap.com/detail/${pois[i].id }' target='_blank'>详细信息</a><br/>地址：${pois[i].address} <br/>类型：${pois[i].type } </span>`;
                     // marker.setAnimation('AMAP_ANIMATION_BOUNCE');
                     marker.id = pois[i].id;
                     marker.name = pois[i].name;
@@ -197,13 +199,14 @@ function markerClick(e) {
             if (data.trans_result.length > 0) {
                 translation = data.trans_result[0].dst;
             } else {
-                alert("Translation failed.\r\n error_code:" + data.erro_code + "error_msg:" + data.error_msg + ".");
+                alert(`Translation failed.
+                        error_code:${data.erro_code},error_msg:${data.error_msg }.`);
             }
 
         })
     //若返回消息无误，将翻译信息显示在信息栏中
         .done(function () {
-            infoWindow.setContent(e.target.content + '<div>Translation:' + translation + '</div>');
+            infoWindow.setContent(`${e.target.content}<div>Translation:${translation}</div>`);
             infoWindow.open(map, e.target.getPosition());
             map.setFitView();
         });
@@ -219,6 +222,7 @@ $('ul').on('mouseenter', 'li', function () {
         $("li[class*='mouseover']").removeClass("mouseover");
 
     });
+
 
 //网页加载完成后，在加载地图，完成后续初始化
 window.addEventListener('load', initializeMap);
