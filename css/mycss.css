@@ -20,6 +20,7 @@ body {
 }
 
 #screen {
+    float:right;
     height: 100%;
     width: 1000px;
     text-align: left;
